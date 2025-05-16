@@ -1,0 +1,162 @@
+﻿<Page x:Class="Organizer.View.MainOrganizerPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:vm="clr-namespace:Organizer.ViewModel" d:DataContext="{d:DesignInstance Type=vm:MainVM}"
+      xmlns:local="clr-namespace:Organizer.Model"
+      mc:Ignorable="d" 
+      d:DesignHeight="900" d:DesignWidth="1600"
+      Title="MainOrganizerPage">
+    <Page.Resources>
+        <Style TargetType="TextBlock" x:Key="LabelStyle">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontFamily" Value="Roboto Slab"/>
+            <Setter Property="Foreground" Value="#7D5A50"/>
+            <Setter Property="Margin" Value="0,0,5,0"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="IfCompleted">
+                <Setter Property="TextDecorations" Value="{x:Null}" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsCompleted}" Value="True">
+                        <Setter Property="TextDecorations" Value="Strikethrough" />
+                        <Setter Property="Foreground" Value="Gray"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+    </Page.Resources>
+    
+    <Grid Margin="10">
+        <Border CornerRadius="25" Background="Transparent" Cursor="">
+            <ListView ItemsSource="{Binding SortedTasks}"
+                      HorizontalContentAlignment="Stretch"
+                      VerticalAlignment="Stretch"
+                      Background="Transparent"
+                      BorderThickness="0"
+                      SelectedItem="{Binding SelectedTask, Mode=TwoWay}"
+                      SelectionMode="Single">
+                <ListView.ItemTemplate>
+                    <DataTemplate DataType="{x:Type local:TaskItem}">
+                        <materialDesign:Card Margin="5" Padding="15" UniformCornerRadius="25" Background="White">
+                            <materialDesign:Card.Effect>
+                                <DropShadowEffect Color="#A47551" BlurRadius="10" ShadowDepth="4" Direction="270" Opacity="0.3"/>
+                            </materialDesign:Card.Effect>
+                            <Grid Cursor="">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="{Binding Title}"
+                                           Style="{StaticResource IfCompleted}"
+                                           FontFamily="Roboto Slab"
+                                           FontSize="30" 
+                                           FontWeight="Bold" 
+                                           Foreground="#5A3E36" 
+                                           Grid.Row="0" Grid.Column="0" 
+                                           TextWrapping="Wrap"/>
+
+                                <CheckBox 
+                                          Name="IsTaskCompleted"
+                                          IsChecked="{Binding IsCompleted}"
+                                          FontFamily="Roboto Slab"
+                                          Content="Выполнено" 
+                                          FontSize="20"
+                                          Grid.Row="0" Grid.Column="1" 
+                                          VerticalAlignment="Center"
+                                          Foreground="#708238"/>
+
+                                <TextBlock Text="{Binding Description}"
+                                           Style="{StaticResource IfCompleted}"
+                                           FontFamily="Roboto Slab"
+                                           Grid.Row="1" Grid.ColumnSpan="2" 
+                                           FontSize="20"
+                                           Margin="0,8,0,0" 
+                                           TextWrapping="Wrap" 
+                                           Foreground="#7D5A50"/>
+
+                                <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,8,0,0">
+                                    <TextBlock Text="Приоритет:" Style="{StaticResource LabelStyle}"/>
+                                    <TextBlock Text="{Binding Priority}" FontFamily="Roboto Slab" Foreground="#708238" Margin="0,0,15,0"/>
+                                    <TextBlock Text="Категория:" Style="{StaticResource LabelStyle}"/>
+                                    <TextBlock Text="{Binding Category}" FontFamily="Roboto Slab" Foreground="#708238"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.ColumnSpan="2" Margin="0,8,0,0">
+                                    <TextBlock Text="Дата выполнения:" Style="{StaticResource LabelStyle}"/>
+                                    <TextBlock FontFamily="Roboto Slab" Text="{Binding DueDateTime, StringFormat=d}" Foreground="#708238"/>
+                                </StackPanel>
+
+                            </Grid>
+                        </materialDesign:Card>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Border>
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Bottom" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="0.5*"/>
+            </Grid.ColumnDefinitions>
+            <Button
+                Grid.Column="0"
+                Command="{Binding NavigateToAddTask}" 
+                FontFamily="Roboto Slab" 
+                Content="Создать" 
+                FontWeight="DemiBold" 
+                Background="#A47551" 
+                Foreground="White" 
+                BorderBrush="#A47551" 
+                MinHeight="40" 
+                MinWidth="200" 
+                FontSize="20" 
+                Margin="20" 
+                Style="{StaticResource MaterialDesignRaisedButton}" 
+                materialDesign:ButtonAssist.CornerRadius="10" Cursor="Hand"/>
+            <Button
+                Grid.Column="1"
+                Command="{Binding NavigateToEditTask}"
+                IsEnabled="{Binding IsEditButtonEnabled}"
+                FontFamily="Roboto Slab" 
+                Content="Редактировать" 
+                FontWeight="DemiBold" 
+                Background="#A47551" 
+                Foreground="White" 
+                BorderBrush="#A47551" 
+                MinHeight="40" 
+                MinWidth="200" 
+                FontSize="20" 
+                Margin="20" 
+                Style="{StaticResource MaterialDesignRaisedButton}" 
+                materialDesign:ButtonAssist.CornerRadius="10" Cursor="Hand"/>
+            <Button
+                Grid.Column="2"
+                Command="{Binding DeleteCheckedTasks}"
+                FontFamily="Roboto Slab" 
+                Content="Удалить выполненные" 
+                FontWeight="DemiBold" 
+                Background="#A47551" 
+                Foreground="White" 
+                BorderBrush="#A47551" 
+                MinHeight="40" 
+                MinWidth="200" 
+                FontSize="20" 
+                Margin="20" 
+                Style="{StaticResource MaterialDesignRaisedButton}" 
+                materialDesign:ButtonAssist.CornerRadius="10" Cursor="Hand"/>
+            <ComboBox Grid.Column="3" 
+                      SelectedItem="{Binding SelectedSortOption}" 
+                      ItemsSource="{Binding SortOptions}"/>
+        </Grid>
+    </Grid>
+</Page>
