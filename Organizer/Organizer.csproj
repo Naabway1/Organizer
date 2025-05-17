@@ -62,7 +62,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Core\TaskStorage.cs" />
-    <Compile Include="Core\TimeConverter.cs" />
+    <Compile Include="Core\TimeSpanToDateTimeConverter.cs" />
     <Compile Include="ViewModel\MainVM.cs" />
     <Compile Include="View\AddNewTask.xaml.cs">
       <DependentUpon>AddNewTask.xaml</DependentUpon>

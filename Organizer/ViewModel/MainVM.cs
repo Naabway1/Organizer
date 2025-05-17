@@ -29,7 +29,7 @@ namespace Organizer.ViewModel
             get => _reminderTime;
             set
             {
-                if (value !=  _reminderTime)
+                if (value != _reminderTime)
                 {
                     _reminderTime = value;
                 }
@@ -144,13 +144,21 @@ namespace Organizer.ViewModel
 
         private void DeleteChecked()
         {
-            var completedTasks = AllTasks.Where(t => t.IsCompleted).ToList();
-            foreach (var task in completedTasks)
+            var result = MessageBox.Show("Удалить все выполненные задачи?", "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
             {
-                AllTasks.Remove(task);
+                var completedTasks = AllTasks.Where(t => t.IsCompleted).ToList();
+                foreach (var task in completedTasks)
+                {
+                    AllTasks.Remove(task);
+                }
+                SaveTasks();
+                SortTasks();
             }
-            SaveTasks();
-            SortTasks();
+            else
+            {
+                return;
+            }
         }
 
         private void ShowToast(string title, string message)
@@ -187,7 +195,10 @@ namespace Organizer.ViewModel
         private void AddTask()
         {
             if (string.IsNullOrWhiteSpace(NewTask.Title) || NewTask.DueDateTime == default)
+            {
+                MessageBox.Show("Отсутствует дата и/или название задачи, они обязательны к заполнению!");
                 return;
+            }
 
             AllTasks.Add(new TaskItem
             {
@@ -201,16 +212,16 @@ namespace Organizer.ViewModel
                 ReminderDateTime = UpdateFullReminderDateTime()
             });
 
-
             SaveTasks();
             SortTasks();
-            
-            NewTask = new TaskItem() 
-            { 
+
+            NewTask = new TaskItem()
+            {
                 DueDateTime = DateTime.Now,
                 Priority = null,
                 Category = null
             };
+
             _navigation.NavigateTo("MainPage", this);
         }
 
@@ -236,9 +247,7 @@ namespace Organizer.ViewModel
 
         private void DeleteTask(TaskItem task)
         {
-            if (task == null) 
-                return;
-            var result = MessageBox.Show("Удалить все выполненные задачи?", "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            var result = MessageBox.Show("Удалить данную задачу?", "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (result == MessageBoxResult.Yes)
             {
                 AllTasks.Remove(task);
@@ -254,8 +263,11 @@ namespace Organizer.ViewModel
 
         private void UpdateTask(TaskItem task)
         {
-            if (task == null || string.IsNullOrWhiteSpace(SelectedTask.Title) || SelectedTask.DueDateTime == default) 
+            if (task == null || string.IsNullOrWhiteSpace(SelectedTask.Title) || SelectedTask.DueDateTime == default)
+            {
+                MessageBox.Show("Запись не может быть отредактирована! Дата и/или название пусты, они обязательны к заполнению!");
                 return;
+            }
 
             if (task.IsCompleted == true)
             {
@@ -270,5 +282,4 @@ namespace Organizer.ViewModel
             _navigation.NavigateTo("MainPage", this);
         }
     }
-
 }
