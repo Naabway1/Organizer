@@ -101,6 +101,12 @@ namespace Organizer.ViewModel
             set
             {
                 _newTask = value;
+                DispatcherTimer timer = new DispatcherTimer
+                {
+                    Interval = TimeSpan.FromSeconds(30)
+                };
+                timer.Tick += (s, e) => CheckReminders();
+                timer.Start();
                 OnPropertyChanged(nameof(NewTask));
             }
         }
@@ -115,13 +121,6 @@ namespace Organizer.ViewModel
         public MainVM(Navigation navigation)
         {
             _navigation = navigation;
-
-            DispatcherTimer timer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(30)
-            };
-            timer.Tick += (s, e) => CheckReminders();
-            timer.Start();
 
             LoadTasks();
             SelectedSortOption = SortOption.ПоДате;
