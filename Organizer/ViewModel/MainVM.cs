@@ -171,12 +171,14 @@ namespace Organizer.ViewModel
 
         private void CheckReminders()
         {
-            var now = DateTime.Now.TimeOfDay;
-            foreach (var task in AllTasks.Where(t => !t.IsCompleted && t.ReminderDateTime.HasValue))
+            var now = DateTime.Now;
+            foreach (var task in AllTasks.Where(t => !t.IsCompleted && t.ReminderDateTime.HasValue && t.IsNotifyed == false))
             {
-                if (Math.Abs((task.ReminderDateTime.Value - now).Minute) < 1)
+                double difference = (task.ReminderDateTime.Value - now).TotalMinutes;
+                if (difference < 1)
                 {
                     ShowToast(task.Title, task.Description);
+                    task.IsNotifyed = true;
                 }
             }
         }

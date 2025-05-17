@@ -37,6 +37,6 @@ namespace Organizer.Model
 
         public TaskPriority? Priority { get; set; }
 
-
+        public bool IsNotifyed { get; set; } = false;
     }
 }
