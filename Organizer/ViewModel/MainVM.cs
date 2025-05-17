@@ -7,7 +7,6 @@ using System.Linq;
 using Microsoft.Toolkit.Uwp.Notifications;
 using System.Windows;
 using System.Windows.Input;
-using System.Threading.Tasks;
 using System.Windows.Threading;
 
 namespace Organizer.ViewModel

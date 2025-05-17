@@ -28,7 +28,12 @@
     </Page.Resources>
     
     <Grid Margin="10">
-        <Border CornerRadius="25" Background="Transparent" Cursor="">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="0.90*"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Foreground="#5A3E36" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Заметки" FontFamily="Roboto Slab" Margin="10" FontWeight="Bold"/>
+        <Border Grid.Row="1" CornerRadius="25" Background="Transparent" Cursor="">
             <ListView ItemsSource="{Binding SortedTasks}"
                       HorizontalContentAlignment="Stretch"
                       VerticalAlignment="Stretch"
@@ -85,14 +90,14 @@
 
                                 <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,8,0,0">
                                     <TextBlock Text="Приоритет:" Style="{StaticResource LabelStyle}"/>
-                                    <TextBlock Text="{Binding Priority}" FontFamily="Roboto Slab" Foreground="#708238" Margin="0,0,15,0"/>
+                                    <TextBlock Text="{Binding Priority}" FontFamily="Roboto Slab" FontWeight="DemiBold" Foreground="#708238" Margin="0,0,15,0"/>
                                     <TextBlock Text="Категория:" Style="{StaticResource LabelStyle}"/>
-                                    <TextBlock Text="{Binding Category}" FontFamily="Roboto Slab" Foreground="#708238"/>
+                                    <TextBlock Text="{Binding Category}" FontFamily="Roboto Slab" FontWeight="DemiBold" Foreground="#708238"/>
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.ColumnSpan="2" Margin="0,8,0,0">
                                     <TextBlock Text="Дата выполнения:" Style="{StaticResource LabelStyle}"/>
-                                    <TextBlock FontFamily="Roboto Slab" Text="{Binding DueDateTime, StringFormat=d}" Foreground="#708238"/>
+                                    <TextBlock FontFamily="Roboto Slab" FontWeight="DemiBold" Text="{Binding DueDateTime, StringFormat=d}" Foreground="#708238"/>
                                 </StackPanel>
 
                             </Grid>
@@ -101,7 +106,7 @@
                 </ListView.ItemTemplate>
             </ListView>
         </Border>
-        <Grid HorizontalAlignment="Center" VerticalAlignment="Bottom" >
+        <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.5*"/>
                 <ColumnDefinition Width="0.5*"/>
