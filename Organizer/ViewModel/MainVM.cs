@@ -178,6 +178,7 @@ namespace Organizer.ViewModel
                 {
                     ShowToast(task.Title, task.Description);
                     task.IsNotifyed = true;
+                    SaveTasks();
                 }
             }
         }
@@ -212,6 +213,8 @@ namespace Organizer.ViewModel
                 IsCompleted = false,
                 ReminderDateTime = UpdateFullReminderDateTime()
             });
+
+            ReminderTime = null;
 
             SaveTasks();
             SortTasks();
@@ -279,6 +282,7 @@ namespace Organizer.ViewModel
             SortTasks();
 
             SelectedTask = null;
+            ReminderTime = null;
 
             _navigation.NavigateTo("MainPage", this);
         }
